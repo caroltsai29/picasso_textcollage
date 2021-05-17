@@ -114,35 +114,21 @@ public class DrawTextPanel extends JPanel  {
 		bottom.add(input);
 		add(bottom, BorderLayout.SOUTH);
 		
-		/*
-		 * This is the second feature that I added in this program.
-		 * The second feature is that, when "Generate Random" button is pressed,
-		 * the program will generate 150 times random DrawTextItem with different 
-		 * coordinate, color, rotation, font families and style, and many more.
-		 * 
-		 * To implement this, I have change the parameter in doMousePress() function
-		 * from (MouseEvent e) to (int x, int y) to be able to get random generated x and y values
-		 * 
-		 * Besides that, I have added a new button next to the text field
-		 * 
-		 */
 		JButton button = new JButton("Generate Random");
 		bottom.add(button);
 		
 		canvas.addMouseListener( new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				doMousePress( e.getX(), e.getY() ); // when the canvas is click, use MouseEvent e to get the current X and Y coordinate value
+				doMousePress( e.getX(), e.getY() ); 
 			}
 		} );
 		
-		button.addActionListener(new ActionListener() { // now add a ActionListener for the button
-			public void actionPerformed(ActionEvent e) { // when the button is clicked
-				
-				for (int i = 0; i < 150; i++) { // generate random integer values for the x and y coordinate
-					int X = new Random().nextInt(800); // the range used here is according to the canvas width and height
+		button.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) { 
+				for (int i = 0; i < 150; i++) { 
+					int X = new Random().nextInt(800); 
 					int Y = new Random().nextInt(600);
-					
-					doMousePress(X, Y); // call doMousePress function with generated X and Y values
+					doMousePress(X, Y); 
 				}
 			}
 		} );
@@ -154,7 +140,7 @@ public class DrawTextPanel extends JPanel  {
 	 * the string is at the point where the user clicked.
 	 * @param e the mouse event that was generated when the user clicked
 	 */
-	public void doMousePress(int x, int y) { // I have change the parameter (MouseEvent e) to (int x, int y) to be able to get random generated x and y values
+	public void doMousePress(int x, int y) {
 		String text = input.getText().trim();
 		if (text.length() == 0) {
 			input.setText("Hello World!");
@@ -180,51 +166,35 @@ public class DrawTextPanel extends JPanel  {
 	 * 
 	 */
 	public void randomStyle(DrawTextItem s) {
-		String[] fontFamilies = {"Monospace", "Helvetica", "TimesRoman", "Courier", "Serif", "Sans_Serif"}; // create an array which contains different font families
-		int fontType = new Random().nextInt(fontFamilies.length); // generating index value to get random item from the fontFamilies array
-		int fontSize = new Random().nextInt(15); // generating different font size from 0 to 15
-		if (fontSize <= 6) // to avoid the font to be too small, set a condition
-			fontSize = 7;// here, i set the smallest font size to be 7
-		
-		int fontStyle; // generating different fontStyle like Bold or Italic or both
+		String[] fontFamilies = {"Monospace", "Helvetica", "TimesRoman", "Courier", "Serif", "Sans_Serif"}; 
+		int fontType = new Random().nextInt(fontFamilies.length); 
+		int fontSize = new Random().nextInt(15); 
+		if (fontSize <= 6)
+			fontSize = 7;
+		int fontStyle;
 		if (Math.random() > 0.25)
 			fontStyle = Font.ITALIC;
 		else if (Math.random() > 0.5)
 			fontStyle = Font.BOLD;
 		else
 			fontStyle = Font.ITALIC + Font.BOLD;
-		
-		s.setFont( new Font(fontFamilies[fontType], fontStyle, fontSize )); // putting all together. Set the font using new Font with the random properties generate before. 
-
-		
-		int angle = new Random().nextInt(359); // generating different value for the word rotation. the range is from 0 to 359, as 360 degree == 0 degree
+		s.setFont( new Font(fontFamilies[fontType], fontStyle, fontSize )); 
+		int angle = new Random().nextInt(359);
 		s.setRotationAngle(angle);
-		
-		
-		int scale = new Random().nextInt(5); // give different scale for the word "tag"
-		if (scale == 0) // as the smallest value accepted for magnification is 1, hence, when the program generated a 0 value
-			scale = 1; // set the value to 1
-		s.setMagnification(scale);  // Default is 1, meaning no magnification.
-		
-		if (Math.random() < 0.5) // Give random condition to have border or not
-			s.setBorder(true);  // Default is false, meaning don't draw a border.
+		int scale = new Random().nextInt(5);
+		if (scale == 0)
+			scale = 1; 
+		s.setMagnification(scale);
+		if (Math.random() < 0.5)
+			s.setBorder(true); 
 		else
 			s.setBorder(false);
-		
-		
-		s.setTextTransparency(0.3); // Default is 0, meaning text is not at all transparent.
-		
-		
-		// Generate random color for the word "tag" background color
-		int r = new Random().nextInt(255); // generate random values for r,g,b from the range 0 to 255 (maximum value of rgb)
+		s.setTextTransparency(0.3);
+		int r = new Random().nextInt(255);
 		int g = new Random().nextInt(255);
 		int b = new Random().nextInt(255);
-		
-		s.setBackground(new Color(r,g,b));  // Default is null, meaning don't draw a background area.
-		
-		
-		// Give random Tansparancy scale for the "tag" background
-		s.setBackgroundTransparency(Math.random() * 0.90 + 0.10);  // Default is 0, meaning background is not transparent.
+		s.setBackground(new Color(r,g,b));
+		s.setBackgroundTransparency(Math.random() * 0.90 + 0.10);
 	}
 	
 	/**
@@ -257,13 +227,13 @@ public class DrawTextPanel extends JPanel  {
 			fileMenu.addSeparator();
 			
 			JMenuItem saveImageItem = new JMenuItem("Save Image...");
-			saveImageItem.setAccelerator(KeyStroke.getKeyStroke(commandKey + "shift S")); // adding an extra shortcut key for Save Image... command
+			saveImageItem.setAccelerator(KeyStroke.getKeyStroke(commandKey + "shift S"));
 			saveImageItem.addActionListener(menuHandler);
 			fileMenu.add(saveImageItem);
 			
 			JMenu editMenu = new JMenu("Edit");
 			menuBar.add(editMenu);
-			undoMenuItem.addActionListener(menuHandler); // undoItem was created in the constructor
+			undoMenuItem.addActionListener(menuHandler); 
 			undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(commandKey + "Z"));
 			editMenu.add(undoMenuItem);
 			editMenu.addSeparator();
@@ -291,11 +261,11 @@ public class DrawTextPanel extends JPanel  {
 	 */
 	private void doMenuCommand(String command) {
 		if (command.equals("Save...")) { 
-			saveImageAsText(); // save all the string info to a file
+			saveImageAsText();
 		}
-		else if (command.equals("Open...")) { // read a previously saved file, and reconstruct the list of strings
+		else if (command.equals("Open...")) {
 			openTextFile();
-			canvas.repaint(); // (you'll need this to make the new list of strings take effect)
+			canvas.repaint(); 
 		}
 		else if (command.equals("Clear")) {  // remove all strings
 			theString = null;   // Remove the ONLY string from the canvas.
@@ -304,13 +274,11 @@ public class DrawTextPanel extends JPanel  {
 		}
 		else if (command.equals("Remove Item")) { // remove the most recently added string
 			// to apply undo in the program
-			if (theString.size() > 0) { // when the list ArrayList size is more than 0
-				theString.remove(theString.size() - 1); // remove the item from the back, by taking the size of ArrayList minus 1 
+			if (theString.size() > 0) {
+				theString.remove(theString.size() - 1); 
 			}
-			
-			if (theString.size() == 0) // if the ArrayList empty
-				undoMenuItem.setEnabled(false); // set undoMenuItem to false
-			
+			if (theString.size() == 0)
+				undoMenuItem.setEnabled(false); 
 			canvas.repaint();
 		}
 		else if (command.equals("Set Text Color...")) {
@@ -354,56 +322,45 @@ public class DrawTextPanel extends JPanel  {
 	 * Save the progress as a text file.
 	 */
 	private void saveImageAsText() {
-		File textFile = fileChooser.getOutputFile(this, "Select Text File Name", "textImage.txt"); // get the desire textFile to save, this is to write the Text file
-		if (textFile == null) // When the user did not choose any file
-			return; // break from the function
-		
+		File textFile = fileChooser.getOutputFile(this, "Select Text File Name", "textImage.txt"); 
+		if (textFile == null)
+			return;
 		try {
-			PrintWriter write = new PrintWriter(textFile); // once the file choose, write the text
-			
-			write.println("New textImage"); // write a line "New textImage". This is used to check whether the text file with is going to open later on is valid or not.
-			
-			// write done the canvas background color according to the sequence r,g, and b. This is important as later on, when we read the file, we will be following according to this order
+			PrintWriter write = new PrintWriter(textFile);
+			write.println("New textImage");
 			write.println(canvas.getBackground().getRed());
 			write.println(canvas.getBackground().getGreen());
 			write.println(canvas.getBackground().getBlue());
-			
-			
 			if (theString != null)
-				for (DrawTextItem s: theString) { // make a loop to go through the strings in ArrayList
-					write.println("theString:"); // write "theString:" as the title to define the strings properties
-					write.println(s.getString()); // first, get the string context
-					write.println(s.getX()); // get the string x and y coordinate
+				for (DrawTextItem s: theString) { 
+					write.println("theString:"); 
+					write.println(s.getString()); 
+					write.println(s.getX());
 					write.println(s.getY());
-					write.println(s.getFont().getName()); // get the fontType (families) name, and write into the text file
-					write.println(s.getFont().getStyle()); // get the fontStyle as in Bold, Italic, or both 
-					write.println(s.getFont().getSize()); // get the fontSize
-					write.println(s.getTextColor().getRed()); // get the TextColor in RGB sequence 
+					write.println(s.getFont().getName());
+					write.println(s.getFont().getStyle());
+					write.println(s.getFont().getSize());
+					write.println(s.getTextColor().getRed()); 
 					write.println(s.getTextColor().getGreen());
 					write.println(s.getTextColor().getBlue());
-					write.println(s.getTextTransparency()); // get the fontTransparency
-					
-					if (s.getBackground() == null) { // When there's no Background color for the "tag"
-						write.println(-1); // write -1 into the text file. We will be using this to set the background color of the tag later on
+					write.println(s.getTextTransparency());
+					if (s.getBackground() == null) {
 						write.println(-1);
 						write.println(-1);
-						
-					} else { // when the color is found, write down the background RGB values into the textFile 
+						write.println(-1);
+					} else {
 						write.println(s.getBackground().getRed()); 
 						write.println(s.getBackground().getGreen());
 						write.println(s.getBackground().getBlue());
 					}
-					
-					write.println(s.getBackgroundTransparency()); // write down the "tag" BackgroundTransparency value
-					write.println(s.getBorder()); // write down the boolean logic of the border 
-					write.println(s.getMagnification()); // write down the "tag" Magnification scale value
-					write.println(s.getRotationAngle()); // write down the "tag" Rotation angle value
+					write.println(s.getBackgroundTransparency());
+					write.println(s.getBorder())
+					write.println(s.getMagnification());
+					write.println(s.getRotationAngle());
 				}
-			
-			// once all value is written down, close PrintWriter
 			write.close();
 
-		} catch (Exception e) { // if an error occur, pop up a warning window
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, 
 					"Sorry, an error occurred while trying to save this image progress.\n" + "Error message: " + e);
 		}
@@ -413,69 +370,48 @@ public class DrawTextPanel extends JPanel  {
 	 * Open the save progress using a text file
 	 */
 	private void openTextFile() {
-		File openTextFile = fileChooser.getInputFile(this, "Open Saved Text File"); // get the fileName that we want to open
-		if (openTextFile == null) // if nothing was selected, break from the function
+		File openTextFile = fileChooser.getInputFile(this, "Open Saved Text File"); 
+		if (openTextFile == null)
 			return;
 		
 		try {
-			Scanner read = new Scanner(openTextFile); // read the text file using Scanner class
-			
-			// First, we need to check is the text file that we are going to read is valid.
-			if (!read.nextLine().equals("New textImage")) { // to check whether the text file that we are reading is the one that display the artwrok from before
-				
-					// when the string "New textImage" is not found, which means this text file is invalid, 
-					// hence, display error message and break from the function
+			Scanner read = new Scanner(openTextFile); 
+			if (!read.nextLine().equals("New textImage")) {
 				JOptionPane.showMessageDialog(this, "Sorry, This is not an valid file. \nPlease try again."); 
 				return;
 			}
 			
-			Color savedBg = new Color(read.nextInt(),read.nextInt(),read.nextInt()); // first read for the canvas background color
-							// this constructor is creating the color using RGB sequence, hence it is important to save it in the correct sequence in saveImageAsText() method
-			
-			ArrayList<DrawTextItem> newStrings = new ArrayList<DrawTextItem>(); // create a new ArrayList to temporary store all the Strings informations 
-			DrawTextItem newText; // create a new DrawTextItem object
-			
-			read.nextLine(); // skip one line
-			
+			Color savedBg = new Color(read.nextInt(),read.nextInt(),read.nextInt());
+			ArrayList<DrawTextItem> newStrings = new ArrayList<DrawTextItem>(); 
+			DrawTextItem newText;
+			read.nextLine();
 			while (read.hasNext() && read.nextLine().equals("theString:")) { 
-					// when the text file contains more information and has the line "theString:", set the newText style,and store it into the ArrayList
-				
 				newText = new DrawTextItem(read.nextLine(), read.nextInt(), read.nextInt());
+				read.nextLine();
+				newText.setFont(new Font(read.nextLine(), read.nextInt(), read.nextInt()));
+				newText.setTextColor(new Color(read.nextInt(), read.nextInt(), read.nextInt()));
+				newText.setTextTransparency(read.nextDouble());
 				
-				read.nextLine(); // skip one line
-				
-				newText.setFont(new Font(read.nextLine(), read.nextInt(), read.nextInt())); // set the font style by creating a new Font object. Read the values according to this sequence, 
-																							// "fontFamily", fontStyle, and fontSize
-				
-				newText.setTextColor(new Color(read.nextInt(), read.nextInt(), read.nextInt())); // set the Text color by creating a new Color object
-				// 						  ^ this constructor is creating the color using RGB sequence, hence it is important to save it in the correct sequence in saveImageAsText() method
-				
-				newText.setTextTransparency(read.nextDouble()); // set newText TextTransparency by reading the next double value
-				
-				int r = read.nextInt(); // read the r,g,b
+				int r = read.nextInt(); 
 				int g = read.nextInt();
 				int b = read.nextInt();
-				if (r == -1) // when the previous "tag" background is none
-					newText.setBackground(null); // set newText Background to null
+				if (r == -1)
+					newText.setBackground(null); 
 				
 				else
-					newText.setBackground(new Color(r, g, b)); // else, set the background of newText by using Color constructor
+					newText.setBackground(new Color(r, g, b));
 				
-				newText.setBackgroundTransparency(read.nextDouble()); // set newText BackgroundTransparency by reading the next double value
-				newText.setBorder(read.nextBoolean()); // set newText border by reading the next boolean value
-				newText.setMagnification(read.nextDouble()); // set newText Magnification scale by reading the next double value
-				newText.setRotationAngle(read.nextDouble()); // set newText rotation angle by reading the next double value
-				
-				read.nextLine(); // skip one line
-				
-				newStrings.add(newText); // and store it into the ArrayList
+				newText.setBackgroundTransparency(read.nextDouble()); 
+				newText.setBorder(read.nextBoolean());
+				newText.setMagnification(read.nextDouble());
+				newText.setRotationAngle(read.nextDouble());
+				read.nextLine();
+				newStrings.add(newText); 
 			}
 			
-			canvas.setBackground(savedBg); // set the canvas bg color to savedBg which we read it from the beginning
-			theString = newStrings; // set the contents in theString to newStrings contents
-			
-
-		} catch (Exception e) { // if an error occur, pop up a warning window
+			canvas.setBackground(savedBg);
+			theString = newStrings;
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, 
 					"Sorry, an error occurred while trying to load the save progress.\n" + "Error message: " + e);
 		}
